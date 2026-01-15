@@ -1,0 +1,33 @@
+<div class="filters">
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="filters.name" (ngModelChange)="filterChange.emit()" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Surname</mat-label>
+    <input matInput [(ngModel)]="filters.surname" (ngModelChange)="filterChange.emit()" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Seniority</mat-label>
+    <mat-select [(ngModel)]="filters.seniority" (selectionChange)="filterChange.emit()">
+      <mat-option value="">All</mat-option>
+      <mat-option *ngFor="let s of seniorities" [value]="s">{{ s }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Years</mat-label>
+    <input
+      matInput
+      type="number"
+      [(ngModel)]="filters.years"
+      (ngModelChange)="filterChange.emit()"
+    />
+  </mat-form-field>
+
+  <mat-checkbox [(ngModel)]="filters.availability" (change)="filterChange.emit()">
+    Available
+  </mat-checkbox>
+</div>
