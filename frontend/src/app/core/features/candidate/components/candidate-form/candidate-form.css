@@ -1,0 +1,30 @@
+.details-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #c62828;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.details-card h3 {
+  margin: 0 0 1rem 0;
+  color: #c62828;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.details-card p {
+  margin: 0.5rem 0;
+  color: #1f2937;
+}
+
+.details-card strong {
+  font-weight: 600;
+}
+
+.details-note {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-style: italic;
+}

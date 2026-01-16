@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environments';
-import { Candidate } from '../features/candidate/candidate';
+import { ICandidate } from '../features/candidate/models/ICandidate.interface';
 import { ICandidateDetail } from '../features/candidate/models/ICandidateDetail.interface';
 
 @Injectable({
@@ -22,12 +21,16 @@ export class CandidateService {
     return this.http.get<ICandidateDetail>(`${this.apiUrl}/${id}`);
   }
 
-  create(Candidate: Candidate): Observable<ICandidateDetail> {
-    return this.http.post<ICandidateDetail>(this.apiUrl, Candidate);
+  create(candidate: ICandidate, excel: File): Observable<ICandidateDetail> {
+    const formData = new FormData();
+    formData.append('name', candidate.name);
+    formData.append('surname', candidate.surname);
+    formData.append('file', excel);
+    return this.http.post<ICandidateDetail>(this.apiUrl, formData);
   }
 
-  update(id: number, Candidate: ICandidateDetail): Observable<ICandidateDetail> {
-    return this.http.put<ICandidateDetail>(`${this.apiUrl}/${id}`, Candidate);
+  update(id: number, candidate: ICandidateDetail): Observable<ICandidateDetail> {
+    return this.http.patch<ICandidateDetail>(`${this.apiUrl}/${id}`, candidate);
   }
 
   delete(id: number): Observable<void> {

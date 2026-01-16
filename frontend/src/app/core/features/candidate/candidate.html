@@ -1,44 +1,168 @@
-<div class="table-header">
-  <button mat-raised-button color="warn" (click)="openUploadDialog()">Subir XLSX</button>
-</div>
+<div class="container">
+  <div class="header-card">
+    <div class="header-content">
+      <h1>Santander Candidate List</h1>
+      <button mat-raised class="btn-primary" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+        New Candidate
+      </button>
+    </div>
+  </div>
 
-<app-table-filter [filters]="filters" (filterChange)="applyFilters()"></app-table-filter>
+  <div class="table-card">
+    @if (data_source) {
 
-<table mat-table [dataSource]="data_source" matSort class="mat-elevation-z8">
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Name</th>
-    <td mat-cell *matCellDef="let candidate">{{ candidate.name }}</td>
-  </ng-container>
+    <form class="table-container" [formGroup]="filter">
+      <table mat-table [dataSource]="data_source" matSort multiTemplateDataRows class="data-table">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Name</th>
+          <td mat-cell *matCellDef="let candidate" class="text-center">{{ candidate.name }}</td>
+        </ng-container>
 
-  <ng-container matColumnDef="surname">
-    <th mat-header-cell *matHeaderCellDef>Surname</th>
-    <td mat-cell *matCellDef="let candidate">{{ candidate.surname }}</td>
-  </ng-container>
+        <ng-container matColumnDef="name_filter" class="filter-row">
+          <th mat-header-cell *matHeaderCellDef>
+            <input class="filter-input" placeholder="Filter..." formControlName="name" />
+          </th>
+        </ng-container>
 
-  <ng-container matColumnDef="seniority">
-    <th mat-header-cell *matHeaderCellDef>Seniority</th>
-    <td mat-cell *matCellDef="let candidate">{{ candidate.seniority }}</td>
-  </ng-container>
+        <ng-container matColumnDef="surname">
+          <th class="text-center" mat-header-cell mat-sort-header *matHeaderCellDef>Surname</th>
+          <td class="text-center" mat-cell *matCellDef="let candidate">{{ candidate.surname }}</td>
+        </ng-container>
 
-  <ng-container matColumnDef="years">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Years</th>
-    <td mat-cell *matCellDef="let candidate">{{ candidate.years }}</td>
-  </ng-container>
+        <ng-container matColumnDef="surname_filter" class="filter-row">
+          <th mat-header-cell *matHeaderCellDef>
+            <input class="filter-input" placeholder="Filter..." formControlName="surname" />
+          </th>
+        </ng-container>
 
-  <ng-container matColumnDef="availability">
-    <th mat-header-cell *matHeaderCellDef>Availability</th>
-    <td mat-cell *matCellDef="let candidate">
-      <mat-checkbox [checked]="candidate.availability" disabled></mat-checkbox>
-    </td>
-  </ng-container>
+        <ng-container matColumnDef="seniority">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>Seniority</th>
+          <td class="text-center" mat-cell *matCellDef="let candidate">
+            <span
+              class="chip"
+              [class.senior-chip]="candidate.seniority === 'senior'"
+              [class.junior-chip]="candidate.seniority === 'junior'"
+            >
+              {{ candidate.seniority }}
+            </span>
+          </td>
+        </ng-container>
 
-  <ng-container matColumnDef="details">
-    <th mat-header-cell *matHeaderCellDef>Details</th>
-    <td mat-cell *matCellDef="let candidate">
-      <button mat-button color="primary" (click)="openDetails(candidate)">Detalles</button>
-    </td>
-  </ng-container>
+        <ng-container matColumnDef="seniority_filter" class="filter-row">
+          <th mat-header-cell *matHeaderCellDef>
+            <select class="filter-select" formControlName="seniority">
+              <option value="">All</option>
+              <option value="senior">Senior</option>
+              <option value="junior">Junior</option>
+            </select>
+          </th>
+        </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayed_columns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayed_columns"></tr>
-</table>
+        <ng-container matColumnDef="years">
+          <th class="text-center" mat-header-cell *matHeaderCellDef mat-sort-header>Years</th>
+          <td class="text-center" mat-cell *matCellDef="let candidate">{{ candidate.years }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="years_filter" class="filter-row">
+          <th mat-header-cell *matHeaderCellDef>
+            <input
+              type="number"
+              class="filter-input"
+              placeholder="Filter..."
+              formControlName="years"
+            />
+          </th>
+        </ng-container>
+
+        <ng-container matColumnDef="availability">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>Availability</th>
+          <td class="text-center" mat-cell *matCellDef="let candidate">
+            @if (candidate.availability) {
+            <span class="availability-chip available">
+              <mat-icon class="availability-icon">check_circle</mat-icon>
+              Available
+            </span>
+            } @else {
+            <span class="availability-chip unavailable">
+              <mat-icon class="availability-icon">cancel</mat-icon>
+              Not Available
+            </span>
+            }
+          </td>
+
+          <
+        </ng-container>
+
+        <ng-container matColumnDef="availability_filter" class="filter-row">
+          <th mat-header-cell *matHeaderCellDef>
+            <select formControlName="availability" class="filter-select">
+              <option value="">All</option>
+              <option value="true">Available</option>
+              <option value="false">Not Available</option>
+            </select>
+          </th>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th class="text-center" mat-header-cell *matHeaderCellDef>Actions</th>
+
+          <td class="text-center" mat-cell *matCellDef="let candidate">
+            <button
+              class="btn-details"
+              (click)="toggleDetails(candidate); $event.stopPropagation()"
+            >
+              {{ isExpansionDetailRow(0, candidate) ? 'Hide' : 'Details' }}
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions_filter" class="filter-row">
+          <th mat-header-cell *matHeaderCellDef>
+            <button class="btn-clear-filters" (click)="clearFilters()">
+              <mat-icon>filter_alt_off</mat-icon>
+              Clear Filters
+            </button>
+          </th>
+        </ng-container>
+
+        <ng-container matColumnDef="details">
+          <td mat-cell *matCellDef="let candidate" [attr.colspan]="displayed_columns.length">
+            <div class="expanded-cell">
+              <app-candidate-details
+                [candidate]="candidate"
+                (save)="onSaveDetails($event)"
+                (cancel)="onCancelDetails()"
+                (delete)="onDeleteCandidate($event)"
+              ></app-candidate-details>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayed_columns" class="table-header"></tr>
+        <tr mat-header-row *matHeaderRowDef="filter_columns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayed_columns"
+          class="table-data"
+          [class.table-data]="isExpansionDetailRow(0, row)"
+        ></tr>
+
+<tr mat-row *matRowDef="let row; columns: ['details']; when: isExpansionDetailRow" class="expanded-row"></tr>
+        
+<tr mat-no-data-row class="no-data">
+          <td [attr.colspan]="displayed_columns.length">
+            <mat-icon class="no-data-icon">filter_alt</mat-icon>
+            <p class="no-data-text">No results found</p>
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page of users"
+      ></mat-paginator>
+    </form>
+
+    }
+  </div>
