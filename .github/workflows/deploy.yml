@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   frontend:
@@ -31,7 +32,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: frontend/build
+          folder: frontend/dist/frontend
 
   backend:
     name: Deploy NestJs Backend
