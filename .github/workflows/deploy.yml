@@ -61,5 +61,9 @@ jobs:
 
       - name: Deploy backend via SSH
         uses: easingthemes/ssh-deploy@v2
+
+        with:
+          branch: gh-pages
+          github-token: ${{ secrets.GITHUB_TOKEN }}
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
