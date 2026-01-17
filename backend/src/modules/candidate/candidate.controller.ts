@@ -49,7 +49,9 @@ export class CandidateController {
       years: Number(candidate_row!.getCell(1).value),
       seniority: candidate_row!.getCell(2).value as CandidateSeniority,
       availability:
-        String(candidate_row!.getCell(3).value) == 'yes' ? true : false,
+        String(candidate_row!.getCell(3).value).toLowerCase() == 'yes'
+          ? true
+          : false,
     };
 
     return this.candidateService.create(

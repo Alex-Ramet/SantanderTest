@@ -25,7 +25,7 @@ export class CandidateService {
   }
 
   findAll(): Promise<Candidate[]> {
-    return this.candidateRepository.find();
+    return this.candidateRepository.find({ order: { id: 'desc' } });
   }
 
   async findOne(id: number): Promise<Candidate> {
