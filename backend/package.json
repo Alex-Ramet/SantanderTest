@@ -25,6 +25,7 @@
     "@nestjs/platform-express": "^11.1.11",
     "@nestjs/typeorm": "^11.0.0",
     "exceljs": "^4.4.0",
+    "jest": "^30.2.0",
     "multer": "^2.0.2",
     "mysql2": "^3.16.0",
     "reflect-metadata": "^0.2.2",

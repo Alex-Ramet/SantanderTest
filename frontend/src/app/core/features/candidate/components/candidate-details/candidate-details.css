@@ -67,17 +67,20 @@ mat-select {
   box-sizing: border-box;
   outline: none;
   transition: all 0.2s;
-  min-height: 38px;
+  min-height: 40px;
   background-color: white;
+  display: flex !important;
+  align-items: center;
 }
 
 .checkbox-container {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 input:focus,
 mat-select:focus,
+mat-select.mat-mdc-select-trigger-focused,
 .checkbox-container:focus-within {
   border-color: #c62828;
   box-shadow: 0 0 0 1px #c62828;
@@ -119,7 +122,7 @@ mat-select:focus,
 }
 
 .delete-btn {
-  margin-right: auto; 
+  margin-right: auto;
   color: #d32f2f !important;
   border-color: #ef9a9a !important;
 }
@@ -129,7 +132,7 @@ mat-select:focus,
 }
 
 mat-error {
-  font-size: 0.75rem; 
+  font-size: 0.75rem;
   color: #f44336;
   margin-top: 0.25rem;
   display: block;
@@ -137,32 +140,4 @@ mat-error {
 
 ::ng-deep .mat-checkbox-checked .mat-checkbox-background {
   background-color: #c62828 !important;
-}
-
-@media (max-width: 768px) {
-  .details-form {
-    grid-template-columns: 1fr;
-  }
-  
-  .name-field,
-  .surname-field,
-  .seniority-field,
-  .years-field,
-  .availability-field {
-    grid-column: span 1;
-  }
-}
-
-.dialog-header-warn {
-  background: #d32f2f;
-  color: white;
-  padding: 1rem 1.5rem;
-  border-radius: 0.5rem 0.5rem 0 0;
-  margin: -24px -24px 20px -24px;
-}
-
-.dialog-header-warn h2 {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
 }

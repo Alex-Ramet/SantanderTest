@@ -1,13 +1,70 @@
-<!-- <form [formGroup]="form" (ngSubmit)="submit()">
-  <div>
-    <p>Name</p>
-    <input type="text" formControlName="name" placeholder="Introduce a name..." />
-  </div>
+<div class="dialog-header">
+  <h2>New Candidate</h2>
+  <button class="dialog-close" (click)="closeDialog()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
 
-  <div>
-    <p>Surname</p>
-    <input type="text" formControlName="surname" placeholder="Introduce a surname..." />
-  </div>
+<div class="dialog-body">
+  <form [formGroup]="form" class="new-candidate-form">
+    <div class="form-section">
+      <div class="form-field-full">
+        <mat-label>Name</mat-label>
+        <input formControlName="name" placeholder="Enter name" />
+        @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <mat-error>{{ getErrorMessage('name') }}</mat-error>
+        }
+      </div>
+      <div class="form-field-full">
+        <mat-label>Surname</mat-label>
+        <input formControlName="surname" placeholder="Enter surname" />
+        @if (form.get('surname')?.invalid && form.get('surname')?.touched) {
+        <mat-error>{{ getErrorMessage('surname') }}</mat-error>
+        }
+      </div>
+    </div>
 
-  <button type="submit">Send</button>
-</form> -->
+    <div class="form-section">
+      <h3>Excel Upload</h3>
+      <div class="excel-section">
+        <a
+          href="assets/candidate_template.xlsx"
+          download="candidate_template.xlsx"
+          class="download-link"
+        >
+          <mat-icon>download</mat-icon>
+          Download Excel Template
+        </a>
+        <div class="file-upload">
+          <input
+            type="file"
+            id="excel-file"
+            accept=".xlsx,.xls"
+            (change)="onFileSelected($event)"
+            style="display: none"
+          />
+          <label for="excel-file" class="file-upload-label">
+            <mat-icon>upload</mat-icon>
+            Upload Excel File
+          </label>
+          @if (uploaded_file) {
+          <span class="file-name">{{ uploaded_file.name }}</span>
+
+          }
+        </div>
+      </div>
+    </div>
+    <div class="dialog-actions">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="onSaveCanidate()"
+        [disabled]="!form.valid && uploaded_file === null"
+        class="save-btn"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

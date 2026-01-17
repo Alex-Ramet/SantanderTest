@@ -39,41 +39,32 @@
       }
     </div>
 
-
     <div class="form-field availability-field">
       <div class="availability-container">
         <mat-label>Availability</mat-label>
-      <div class="checkbox-container">
-        <mat-checkbox formControlName="availability" class="availability-checkbox"></mat-checkbox>
+        <div class="checkbox-container">
+          <mat-checkbox formControlName="availability" class="availability-checkbox"></mat-checkbox>
+        </div>
       </div>
-      </div>
-      
     </div>
 
     <div class="form-actions">
       <button type="button" mat-stroked-button (click)="onDelete()" class="delete-btn">
-          Delete
+        Delete
       </button>
       <button type="button" mat-stroked-button (click)="onCancel()" class="cancel-btn">
         Cancel
       </button>
-      <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid" class="save-btn">
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+        [disabled]="form.invalid"
+        class="save-btn"
+      >
         Save
       </button>
     </div>
   </form>
   }
 </div>
-
-<ng-template #deleteDialog>
-  <div class="dialog-header-warn">
-    <h2>Delete Candidate</h2>
-  </div>
-  <div class="dialog-body">
-    <p>Are you sure you want to remove this candidate?</p>
-  </div>
-  <div class="dialog-actions">
-    <button mat-stroked-button [mat-dialog-close]="true" class="cancel-btn">Cancel</button>
-    <button mat-raised-button color="warn" (click)="confirmDelete()">Delete</button>
-  </div>
-</ng-template>

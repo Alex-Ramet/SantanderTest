@@ -10,17 +10,15 @@
   </div>
 
   <div class="table-card">
-    @if (data_source) {
-
     <form class="table-container" [formGroup]="filter">
       <table mat-table [dataSource]="data_source" matSort multiTemplateDataRows class="data-table">
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Name</th>
-          <td mat-cell *matCellDef="let candidate" class="text-center">{{ candidate.name }}</td>
+          <th class="text-center" mat-header-cell mat-sort-header *matHeaderCellDef>Name</th>
+          <td class="text-center" mat-cell *matCellDef="let candidate">{{ candidate.name }}</td>
         </ng-container>
 
         <ng-container matColumnDef="name_filter" class="filter-row">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="text-center">
             <input class="filter-input" placeholder="Filter..." formControlName="name" />
           </th>
         </ng-container>
@@ -31,7 +29,7 @@
         </ng-container>
 
         <ng-container matColumnDef="surname_filter" class="filter-row">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="text-center">
             <input class="filter-input" placeholder="Filter..." formControlName="surname" />
           </th>
         </ng-container>
@@ -50,12 +48,16 @@
         </ng-container>
 
         <ng-container matColumnDef="seniority_filter" class="filter-row">
-          <th mat-header-cell *matHeaderCellDef>
-            <select class="filter-select" formControlName="seniority">
-              <option value="">All</option>
-              <option value="senior">Senior</option>
-              <option value="junior">Junior</option>
-            </select>
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            <mat-select
+              [panelClass]="'custom-panel'"
+              class="filter-select"
+              formControlName="seniority"
+            >
+              @for (option of seniorities; track option.label) {
+              <mat-option [value]="option.value">{{ option.label }}</mat-option>
+              }
+            </mat-select>
           </th>
         </ng-container>
 
@@ -65,7 +67,7 @@
         </ng-container>
 
         <ng-container matColumnDef="years_filter" class="filter-row">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="text-center">
             <input
               type="number"
               class="filter-input"
@@ -90,17 +92,16 @@
             </span>
             }
           </td>
-
-          <
         </ng-container>
 
         <ng-container matColumnDef="availability_filter" class="filter-row">
-          <th mat-header-cell *matHeaderCellDef>
-            <select formControlName="availability" class="filter-select">
-              <option value="">All</option>
-              <option value="true">Available</option>
-              <option value="false">Not Available</option>
-            </select>
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            <mat-checkbox
+              [checked]="filter.get('availability')?.value === true"
+              [indeterminate]="filter.get('availability')?.value === null"
+              (click)="changeAvailability($event)"
+            >
+            </mat-checkbox>
           </th>
         </ng-container>
 
@@ -140,29 +141,34 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayed_columns" class="table-header"></tr>
+
         <tr mat-header-row *matHeaderRowDef="filter_columns"></tr>
+
+        <tr mat-no-data-row *matNoDataRow>
+          <td [attr.colspan]="displayed_columns.length" class="no-data">
+            <mat-icon class="no-data-icon">filter_alt</mat-icon>
+            <p class="no-data-text">No results found</p>
+          </td>
+        </tr>
+
         <tr
           mat-row
           *matRowDef="let row; columns: displayed_columns"
           class="table-data"
           [class.table-data]="isExpansionDetailRow(0, row)"
         ></tr>
-
-<tr mat-row *matRowDef="let row; columns: ['details']; when: isExpansionDetailRow" class="expanded-row"></tr>
-        
-<tr mat-no-data-row class="no-data">
-          <td [attr.colspan]="displayed_columns.length">
-            <mat-icon class="no-data-icon">filter_alt</mat-icon>
-            <p class="no-data-text">No results found</p>
-          </td>
-        </tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: ['details']; when: isExpansionDetailRow"
+          class="expanded-row"
+        ></tr>
       </table>
 
       <mat-paginator
+        class="paginator-container"
         [pageSizeOptions]="[5, 10, 25, 100]"
-        aria-label="Select page of users"
+        aria-label="Select page of candidates"
       ></mat-paginator>
     </form>
-
-    }
   </div>
+</div>

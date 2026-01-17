@@ -1,17 +1,46 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { CandidateService } from '../../../../services/canidate.service';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+
+import { ICandidate } from '../../models/ICandidate.interface';
+import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   standalone: true,
   selector: 'app-candidate-form',
-  imports: [ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    FormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatDialogModule,
+  ],
   templateUrl: './candidate-form.html',
   styleUrl: './candidate-form.css',
 })
 export class CandidateForm {
   form: FormGroup = {} as FormGroup;
+  uploaded_file: File | null = null;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private candidateService: CandidateService,
+    private toastr: ToastrService,
+    private dialogRef: MatDialogRef<CandidateForm>
+  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -20,80 +49,38 @@ export class CandidateForm {
     });
   }
 
-  // downloadExcelTemplate() {
-  //   const ws = XLSX.utils.json_to_sheet(template_data);
-  //   const wb = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(wb, ws, 'Candidates');
-  //   XLSX.writeFile(wb, 'candidate_template.xlsx');
-  // }
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.uploaded_file = input.files[0];
+    }
+  }
 
-  // onFileSelected(event: Event) {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files && input.files.length > 0) {
-  //     this.uploaded_file = input.files[0];
-  //     this.readExcelFile(this.uploaded_file);
-  //   }
-  // }
+  onSaveCanidate() {
+    if (!this.uploaded_file) {
+      this.toastr.error('Its necessary to upload a file', 'Error');
+    }
+    const candidate: ICandidate = this.form.value;
+    this.candidateService.create(candidate, this.uploaded_file!).subscribe({
+      next: (data) => {
+        this.dialogRef.close(data);
+        this.toastr.success('Candidate added', 'Success');
+      },
+      error: (err) => {
+        this.toastr.error(err.error.message, 'Error');
+      },
+    });
+  }
 
-  // readExcelFile(file: File) {
-  //   const reader = new FileReader();
-  //   reader.onload = (e: ProgressEvent<FileReader>) => {
-  //     const data = e.target?.result;
-  //     const workbook = XLSX.read(data, { type: 'binary' });
-  //     const sheet_name = workbook.SheetNames[0];
-  //     const worksheet = workbook.Sheets[sheet_name];
-  //     const json_data = XLSX.utils.sheet_to_json(worksheet) as any[];
+  closeDialog() {
+    this.dialogRef.close(undefined);
+  }
 
-  //     this.uploaded_candidates = json_data
-  //       .map((row) => ({
-  //         name: String(row.name || '').trim(),
-  //         surname: String(row.surname || '').trim(),
-  //       }))
-  //       .filter((candidate) => candidate.name && candidate.surname);
-  //   };
-  //   reader.readAsBinaryString(file);
-  // }
-
-  // submit() {
-  //   const candidate = this.form.value;
-  //   console.log('Candidate submitted:', candidate);
-  // }
-
-  // saveCandidates() {
-  //   if (this.new_candidate_form.valid) {
-  //     const candidate: ICandidate = this.new_candidate_form.value;
-  //     this.candidateService.create(candidate).subscribe({
-  //       next: (data) => {
-  //         this.loadData();
-  //         this.closeDialog();
-  //       },
-  //       error: (err) => {
-  //         console.error('Error creating candidate', err);
-  //       },
-  //     });
-  //   } else if (this.uploaded_candidates.length > 0) {
-  //     let completed = 0;
-  //     const total = this.uploaded_candidates.length;
-
-  //     this.uploaded_candidates.forEach((candidate) => {
-  //       this.candidateService.create(candidate).subscribe({
-  //         next: (data) => {
-  //           completed++;
-  //           if (completed === total) {
-  //             this.loadData();
-  //             this.closeDialog();
-  //           }
-  //         },
-  //         error: (err) => {
-  //           console.error('Error creating candidate', err);
-  //           completed++;
-  //           if (completed === total) {
-  //             this.loadData();
-  //             this.closeDialog();
-  //           }
-  //         },
-  //       });
-  //     });
-  //   }
-  // }
+  getErrorMessage(fieldName: string): string {
+    const control = this.form.get(fieldName);
+    if (control?.hasError('required')) {
+      return `${fieldName} is required`;
+    }
+    return '';
+  }
 }

@@ -1,30 +1,195 @@
-.details-card {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  border-left: 4px solid #c62828;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ffcdd2;
+  border-radius: 0.375rem;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.2s;
+  min-height: 38px;
+  background-color: white;
 }
 
-.details-card h3 {
-  margin: 0 0 1rem 0;
-  color: #c62828;
-  font-size: 1.125rem;
-  font-weight: 600;
+input:focus {
+  border-color: #c62828;
+  box-shadow: 0 0 0 1px #c62828;
 }
 
-.details-card p {
-  margin: 0.5rem 0;
-  color: #1f2937;
-}
-
-.details-card strong {
-  font-weight: 600;
-}
-
-.details-note {
-  margin-top: 1rem;
+mat-label {
   font-size: 0.875rem;
-  color: #6b7280;
+  font-weight: 500;
+  color: #374151;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+mat-error {
+  font-size: 0.75rem;
+  color: #f44336;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.dialog-header {
+  background: #c62828;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.dialog-close {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-close:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dialog-close mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.dialog-body {
+  padding: 1.5rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.dialog-body p {
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.new-candidate-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-section h3 {
+  margin: 0 0 0.5rem 0;
+  color: #c62828;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.form-field-full {
+  width: 100%;
+}
+
+.excel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.download-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #c62828;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.download-link:hover {
+  background-color: #ffebee;
+  text-decoration: underline;
+}
+
+.download-link mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.file-upload-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 2px dashed #c62828;
+  border-radius: 0.5rem;
+  color: #c62828;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: #ffebee;
+}
+
+.file-upload-label:hover {
+  background-color: #ffcdd2;
+  border-color: #b71c1c;
+}
+
+.file-upload-label mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.file-name {
+  font-size: 0.875rem;
+  color: #666;
   font-style: italic;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.dialog-actions .save-btn {
+  min-width: 100px;
+  background-color: #c62828;
+  color: white;
+}
+
+.dialog-actions .save-btn:hover:not(:disabled) {
+  background-color: #b71c1c;
+}
+
+.dialog-actions .save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
