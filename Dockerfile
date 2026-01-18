@@ -1,13 +1,14 @@
 # Build frontend
 FROM node:20 AS build
 ARG CONFIGURATION='development'
-WORKDIR /app
+WORKDIR /app/frontend
 
 COPY ./frontend/package.json .
 
 RUN npm install
 
-COPY ./frontend/. .
+COPY frontend/ .
+
 RUN npm run build -- --configuration=$CONFIGURATION --output-path=dist/frontend --output-hashing=all
 
 FROM nginx:alpine
@@ -22,12 +23,12 @@ CMD ["nginx", "-g", "daemon off;"]
 # Build backend
 FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /app/backend
 
-COPY ./backend/package*.json ./
+COPY backend/package*.json ./
 RUN npm install
 
-COPY ./backend. .
+COPY backend/ .
 
 RUN npm run build
 
