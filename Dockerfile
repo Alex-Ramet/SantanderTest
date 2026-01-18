@@ -3,11 +3,11 @@ FROM node:20 AS build
 ARG CONFIGURATION='development'
 WORKDIR /app
 
-COPY package.json .
+COPY ./frontend/package.json .
 
 RUN npm install
 
-COPY . .
+COPY ./frontend/. .
 RUN npm run build -- --configuration=$CONFIGURATION --output-path=dist/frontend --output-hashing=all
 
 FROM nginx:alpine
@@ -24,10 +24,10 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY ./backend/package*.json ./
 RUN npm install
 
-COPY . .
+COPY ./backend. .
 
 RUN npm run build
 
