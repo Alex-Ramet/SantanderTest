@@ -18,6 +18,8 @@ import { ConfigModule } from '@nestjs/config';
       password: process.env.MYSQLPASSWORD,
       database: process.env.MYSQLDATABASE,
       autoLoadEntities: true,
+      cache: false,
+      logging: true,
     }),
     CandidateModule,
   ],
