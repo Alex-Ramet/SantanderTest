@@ -8,7 +8,7 @@ RUN npm install
 
 COPY frontend/ .
 
-RUN npm run build -- --configuration=$CONFIGURATION
+RUN npm run build -- --configuration=$CONFIGURATION --output-path=dist/frontend --output-hashing=all
 
 
 FROM node:20 AS build-backend
@@ -26,7 +26,7 @@ FROM node:20-alpine
 
 RUN apk add --no-cache nginx bash
 
-COPY --from=build-frontend /app/frontend/dist/frontend /usr/share/nginx/html
+COPY --from=build-frontend /app/frontend/dist/frontend/browser /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
 WORKDIR /app/backend
