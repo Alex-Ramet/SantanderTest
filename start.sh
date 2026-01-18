@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Iniciar backend
-node dist/main.js &
+node /app/backend/dist/main.js &
 
 # Iniciar nginx
 nginx -g 'daemon off;'
