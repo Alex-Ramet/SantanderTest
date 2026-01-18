@@ -1,5 +1,5 @@
 FROM node:20 AS build-frontend
-ARG CONFIGURATION='production'
+ARG CONFIGURATION='development'
 
 WORKDIR /app/frontend
 COPY frontend/package*.json ./
