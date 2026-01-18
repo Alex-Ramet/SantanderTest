@@ -86,7 +86,7 @@ export class Candidate implements OnInit, AfterViewInit, OnDestroy {
     private candidateService: CandidateService,
     private dialog: MatDialog,
     private fb: FormBuilder,
-    private readonly toastr: ToastrService
+    private readonly toastr: ToastrService,
   ) {}
   private destroy$ = new Subject<void>();
 
@@ -106,22 +106,21 @@ export class Candidate implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     setTimeout(() => {
-    this.data_source.paginator = this.paginator;
-    this.data_source.sort = this.sort;
-  }, 100);
+      this.data_source.paginator = this.paginator;
+      this.data_source.sort = this.sort;
+    }, 100);
   }
 
-   ngOnDestroy() {
+  ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-
   loadData() {
     this.candidateService.getAll().subscribe({
       next: (data) => {
-      console.log('📡 Datos recibidos del backend:', data);
-      console.log('📊 Cantidad de registros:', data.length);
+        console.log('📡 Datos recibidos del backend:', data);
+        console.log('📊 Cantidad de registros:', data.length);
         this.data_source.data = data;
         this.data_source.filterPredicate = (data: ICandidateDetail, filter_str: string) =>
           this.applyFilters(data, filter_str);

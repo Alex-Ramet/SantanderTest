@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environments';
 import { ICandidate } from '../features/candidate/models/ICandidate.interface';
 import { ICandidateDetail } from '../features/candidate/models/ICandidateDetail.interface';
@@ -10,13 +10,19 @@ import { ICandidateDetail } from '../features/candidate/models/ICandidateDetail.
 })
 export class CandidateService {
   private apiUrl = environment.apiUrl + '/candidate';
-  
-
 
   constructor(private http: HttpClient) {}
-
   getAll(): Observable<ICandidateDetail[]> {
-    return this.http.get<ICandidateDetail[]>(this.apiUrl);
+    console.log('🔵 Llamando a:', this.apiUrl);
+    console.log('🔵 URL completa:', window.location.origin + this.apiUrl);
+
+    return this.http.get<ICandidateDetail[]>(this.apiUrl).pipe(
+      tap((data) => console.log('✅ Datos recibidos:', data)),
+      catchError((error) => {
+        console.error('❌ Error en petición:', error);
+        return throwError(() => error);
+      }),
+    );
   }
 
   getById(id: number): Observable<ICandidateDetail> {
