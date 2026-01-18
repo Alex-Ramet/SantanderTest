@@ -1,9 +1,8 @@
-# Build frontend
-FROM node:20 AS build
-ARG CONFIGURATION='development'
-WORKDIR /app/frontend
+FROM node:20 AS build-frontend
+ARG CONFIGURATION='production'
 
-COPY ./frontend/package.json .
+WORKDIR /app/frontend
+COPY frontend/package*.json ./
 
 RUN npm install
 
@@ -11,27 +10,36 @@ COPY frontend/ .
 
 RUN npm run build -- --configuration=$CONFIGURATION --output-path=dist/frontend --output-hashing=all
 
-FROM nginx:alpine
-RUN rm -rf /usr/share/nginx/html/*
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
-
-CMD ["nginx", "-g", "daemon off;"]
-
-# Build backend
-FROM node:20-alpine
+FROM node:20 AS build-backend
 
 WORKDIR /app/backend
-
 COPY backend/package*.json ./
+
 RUN npm install
 
 COPY backend/ .
 
 RUN npm run build
 
-EXPOSE 3000
+FROM node:20-alpine
 
-CMD ["npm", "run", "start:prod"]
+RUN apk add --no-cache nginx bash
+
+
+COPY --from=build-frontend /app/frontend/dist/frontend /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=build-backend /app/backend/dist /app/backend/dist
+COPY --from=build-backend /app/backend/package*.json /app/backend/
+
+WORKDIR /app/backend
+
+ENV NODE_ENV=production
+
+
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+EXPOSE 80 3000
+CMD ["/start.sh"]
