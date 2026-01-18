@@ -26,9 +26,10 @@ FROM node:20-alpine
 
 RUN apk add --no-cache nginx bash
 
+WORKDIR /app/frontend
 
 COPY --from=build-frontend /app/frontend/dist/frontend /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=build-backend /app/backend/dist /app/backend/dist
 COPY --from=build-backend /app/backend/package*.json /app/backend/
