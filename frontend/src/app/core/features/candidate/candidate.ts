@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ICandidateDetail } from './models/ICandidateDetail.interface';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -18,6 +18,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { CandidateForm } from './components/candidate-form/candidate-form';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-candidate',
@@ -46,7 +47,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   templateUrl: './candidate.html',
   styleUrls: ['./candidate.css'],
 })
-export class Candidate implements OnInit, AfterViewInit {
+export class Candidate implements OnInit, AfterViewInit, OnDestroy {
   data_source = new MatTableDataSource<ICandidateDetail>([]);
 
   filter: FormGroup = {} as FormGroup;
@@ -87,6 +88,7 @@ export class Candidate implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private readonly toastr: ToastrService
   ) {}
+  private destroy$ = new Subject<void>();
 
   ngOnInit() {
     this.filter = this.fb.group({
@@ -99,23 +101,30 @@ export class Candidate implements OnInit, AfterViewInit {
     this.filter.valueChanges.subscribe((values) => {
       this.data_source.filter = JSON.stringify(values);
     });
+    this.loadData();
   }
 
   ngAfterViewInit() {
-    this.loadData();
+    setTimeout(() => {
+    this.data_source.paginator = this.paginator;
+    this.data_source.sort = this.sort;
+  }, 100);
   }
+
+   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
 
   loadData() {
     this.candidateService.getAll().subscribe({
       next: (data) => {
+      console.log('📡 Datos recibidos del backend:', data);
+      console.log('📊 Cantidad de registros:', data.length);
         this.data_source.data = data;
         this.data_source.filterPredicate = (data: ICandidateDetail, filter_str: string) =>
           this.applyFilters(data, filter_str);
-
-        setTimeout(() => {
-          this.data_source.paginator = this.paginator;
-          this.data_source.sort = this.sort;
-        }, 100);
       },
       error: (_) => this.toastr.error('Cannot load the candidates', 'Error'),
     });
