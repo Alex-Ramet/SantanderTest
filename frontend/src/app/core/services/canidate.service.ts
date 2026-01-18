@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environments';
 import { ICandidate } from '../features/candidate/models/ICandidate.interface';
@@ -10,6 +10,8 @@ import { ICandidateDetail } from '../features/candidate/models/ICandidateDetail.
 })
 export class CandidateService {
   private apiUrl = environment.apiUrl + '/candidate';
+  
+
 
   constructor(private http: HttpClient) {}
 
@@ -26,6 +28,7 @@ export class CandidateService {
     formData.append('name', candidate.name);
     formData.append('surname', candidate.surname);
     formData.append('file', excel);
+
     return this.http.post<ICandidateDetail>(this.apiUrl, formData);
   }
 
