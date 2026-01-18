@@ -8,7 +8,7 @@ RUN npm install
 
 COPY frontend/ .
 
-RUN npm run build -- --configuration=$CONFIGURATION --output-path=dist/frontend --output-hashing=all
+RUN npm run build -- --configuration=$CONFIGURATION
 
 
 FROM node:20 AS build-backend
