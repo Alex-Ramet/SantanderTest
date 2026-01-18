@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CandidateController } from './candidate.controller';
-import { CandidateService } from './candidate.service';
-import { CreateCandidateDto } from './dto/create-candidate.dto';
-import { UpdateCandidateDto } from './dto/update-candidate.dto';
-import { ExcelCreateCandidateDto } from './dto/excel-create-canidate.dto';
-import { Candidate } from './entity/candidate.entity';
-import { CandidateSeniority } from './dto/candidate-seniority.enum';
+import { CandidateController } from '../src/modules/candidate/candidate.controller';
+import { CandidateService } from '../src/modules/candidate/candidate.service';
+import { CreateCandidateDto } from '../src/modules/candidate/dto/create-candidate.dto';
+import { UpdateCandidateDto } from '../src/modules/candidate/dto/update-candidate.dto';
+import { ExcelCreateCandidateDto } from '../src/modules/candidate/dto/excel-create-canidate.dto';
+import { Candidate } from '../src/modules/candidate/entity/candidate.entity';
+import { CandidateSeniority } from '../src/modules/candidate/dto/candidate-seniority.enum';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
