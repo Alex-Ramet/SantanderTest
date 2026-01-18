@@ -1,5 +1,5 @@
 #!/bin/bash
 
-node dist/main.js &
+node /app/backend/dist/main.js &
 
 nginx -g 'daemon off;'

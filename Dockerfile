@@ -29,10 +29,13 @@ RUN apk add --no-cache nginx bash
 COPY --from=build-frontend /app/frontend/dist/frontend /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
+WORKDIR /app/backend
+
 COPY --from=build-backend /app/backend/dist /app/backend/dist
 COPY --from=build-backend /app/backend/package*.json /app/backend/
+COPY --from=build-backend /app/backend/node_modules ./node_modules
 
-WORKDIR /app/backend
+
 
 ENV NODE_ENV=production
 
