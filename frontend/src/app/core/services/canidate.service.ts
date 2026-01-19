@@ -13,6 +13,9 @@ export class CandidateService {
 
   constructor(private http: HttpClient) {}
   getAll(): Observable<ICandidateDetail[]> {
+    console.log('API URL:', this.apiUrl);
+    console.log('Page URL + API URL:', window.location.origin + this.apiUrl);
+
     const timestamp = new Date().getTime();
     const params: HttpParams = new HttpParams();
     params.append('t', timestamp);
