@@ -13,13 +13,10 @@ export class CandidateService {
 
   constructor(private http: HttpClient) {}
   getAll(): Observable<ICandidateDetail[]> {
-    console.log('🔵 Llamando a:', this.apiUrl);
-    console.log('🔵 URL completa:', window.location.origin + this.apiUrl);
-
     return this.http.get<ICandidateDetail[]>(this.apiUrl).pipe(
-      tap((data) => console.log('✅ Datos recibidos:', data)),
+      tap((data) => console.log('Result data:', data)),
       catchError((error) => {
-        console.error('❌ Error en petición:', error);
+        console.error('Request Error:', error);
         return throwError(() => error);
       }),
     );

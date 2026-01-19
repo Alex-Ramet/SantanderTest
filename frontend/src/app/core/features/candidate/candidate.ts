@@ -119,8 +119,6 @@ export class Candidate implements OnInit, AfterViewInit, OnDestroy {
   loadData() {
     this.candidateService.getAll().subscribe({
       next: (data) => {
-        console.log('📡 Datos recibidos del backend:', data);
-        console.log('📊 Cantidad de registros:', data.length);
         this.data_source.data = data;
         this.data_source.filterPredicate = (data: ICandidateDetail, filter_str: string) =>
           this.applyFilters(data, filter_str);
