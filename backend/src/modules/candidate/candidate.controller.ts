@@ -8,6 +8,7 @@ import {
   Delete,
   UseInterceptors,
   Req,
+  Header,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { CandidateService } from './candidate.service';
@@ -28,6 +29,9 @@ export class CandidateController {
   constructor(private readonly candidateService: CandidateService) {}
 
   @Get()
+  @Header('Cache-Control', 'no-store, no-cache, must-revalidate')
+  @Header('Pragma', 'no-cache')
+  @Header('Expires', '0')
   findAll() {
     return this.candidateService.findAll();
   }

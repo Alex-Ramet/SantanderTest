@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environments';
 import { ICandidate } from '../features/candidate/models/ICandidate.interface';
@@ -13,7 +13,11 @@ export class CandidateService {
 
   constructor(private http: HttpClient) {}
   getAll(): Observable<ICandidateDetail[]> {
-    return this.http.get<ICandidateDetail[]>(this.apiUrl).pipe(
+    const timestamp = new Date().getTime();
+    const params: HttpParams = new HttpParams();
+    params.append('t', timestamp);
+
+    return this.http.get<ICandidateDetail[]>(this.apiUrl, { params }).pipe(
       tap((data) => console.log('Result data:', data)),
       catchError((error) => {
         console.error('Request Error:', error);
